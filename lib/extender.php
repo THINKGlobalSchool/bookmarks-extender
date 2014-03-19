@@ -27,18 +27,18 @@ function bookmarks_extender_populate_preview($bookmark) {
 		$header = "";
 
 		$linkPreview = new LinkPreview();
-		$answer = $linkPreview->crawl($text, $imageQuantity, $header);
+		$result = $linkPreview->crawl($text, $imageQuantity, $header);
 
-		$decoded_response = json_decode($answer);
+		$decoded_response = json_decode($result);
 
 		if ($decoded_response) {
 			if ($decoded_response->images) {
 				$bookmark->preview_image = $decoded_response->images;
 			} 
 
-			if ($decoded_response->description) {
-				$bookmark->preview_description = $decoded_response->description;
-			}
+			// if ($decoded_response->description) {
+			// 	$bookmark->preview_description = $decoded_response->description;
+			// }
 		}
 
 		SetUp::finish();

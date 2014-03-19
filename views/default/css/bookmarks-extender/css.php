@@ -10,3 +10,30 @@
  *
  */
 ?>
+
+.elgg-form-bookmarks-save fieldset > #bookmarks-extender-hidden > div {
+	margin-bottom: 15px;
+}
+
+.bookmarks-address, .bookmarks-check {
+	display: inline-block;
+}
+
+.bookmarks-address {
+	width: 90%;
+}
+
+.bookmarks-check {
+	width: 9%;
+	text-align: right;
+}
+
+#bookmarks-loader {
+	display: none;
+}
+
+.bookmarks-image-left {
+	float: left;
+	max-width: 40%;
+	margin-right: 10px;
+}
