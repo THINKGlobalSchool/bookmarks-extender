@@ -25,8 +25,23 @@ $subtitle = elgg_view('output/url',
 );
 
 if ($object->preview_image) {
-	$image = elgg_view('output/img', array('src' => $object->preview_image), false, false, 'default');
-	$attachments = "<div class='spiffyactivity-item-image'>$image</div>";
+	if ($object->preview_video == 'yes') {
+		$class = 'elgg-lightbox';
+		$href = elgg_normalize_url('ajax/view/bookmarks-extender/video?entity_guid=' . $object->guid);
+	} else {
+		$href = $object->preview_page_url;
+	}
+
+	$image_preview = elgg_view('output/url', array(
+		'text' => elgg_view('output/img', array(
+			'src' => $object->preview_image,
+			'alt' => $object->title,
+		), false, false, 'default'), 
+		'href' => $href,
+		'class' => $class
+	), false, false, 'default');
+
+	$attachments = "<div class='spiffyactivity-item-image'>$image_preview</div>";
 }
 
 if (!$object->description && $object->preview_description) {

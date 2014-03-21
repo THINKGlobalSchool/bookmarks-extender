@@ -66,10 +66,22 @@ if (elgg_in_context('widgets')) {
 }
 
 if ($bookmark->preview_image) {
-	$image_preview = elgg_view('output/img', array(
-		'src' => $bookmark->preview_image,
-		'alt' => $bookmark->title,
-		'class' => 'bookmarks-image-left'
+	$class = 'bookmarks-image-left';
+	if ($bookmark->preview_video == 'yes') {
+		$class = 'elgg-lightbox';
+		$href = elgg_normalize_url('ajax/view/bookmarks-extender/video?entity_guid=' . $bookmark->guid);
+	} else {
+		$href = $bookmark->preview_page_url;
+	}
+
+	$image_preview = elgg_view('output/url', array(
+		'text' => elgg_view('output/img', array(
+			'src' => $bookmark->preview_image,
+			'alt' => $bookmark->title,
+			'class' => 'bookmarks-image-left'
+		)), 
+		'href' => $href,
+		'class' => $class
 	));
 }
 

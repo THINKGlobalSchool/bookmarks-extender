@@ -23,6 +23,10 @@ function bookmarks_extender_init() {
 	elgg_register_simplecache_view('js/bookmarksextender/extender');
 	elgg_register_js('elgg.bookmarksextender', $js);
 
+	// Load lightbox JS/CSS
+	elgg_load_js('lightbox');
+	elgg_load_css('lightbox');
+
 	// Register fb link preview library
 	elgg_register_library('facebook-link-preview', elgg_get_plugins_path() . 'bookmarks-extender/vendors/fblinkpreview/php/classes/LinkPreview.php');
 
@@ -35,6 +39,9 @@ function bookmarks_extender_init() {
 	// Actions
 	$action_base = elgg_get_plugins_path() . "bookmarks-extender/actions/bookmarks-extender";
 	elgg_register_action('bookmarks/preview', "$action_base/preview.php");
+
+	// Ajax view whitelist
+	elgg_register_ajax_view('bookmarks-extender/video');
 }
 
 /**
@@ -48,11 +55,7 @@ function bookmarks_extender_init() {
  */
 function bookmarks_save($event, $object_type, $object) {
 	if (elgg_instanceof($object, 'object', 'bookmarks')) {
-		$image = get_input('preview_image');
-
-		if ($image) {
-			$object->preview_image = $image;
-		}
+		bookmarks_extender_populate_preview($object);
 	}
 	return TRUE;
 }
