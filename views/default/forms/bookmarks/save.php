@@ -76,25 +76,23 @@ $content = <<<HTML
 	<div id='bookmarks-loader' class='elgg-ajax-loader'></div>
 	<div id="bookmarks-extender-preview-container">
 	</div>
-	<div id='bookmarks-extender-hidden' class='hidden'>
-		<div>
-			<label>$description_label</label><br />
-			$description_input
-		</div>
-		<div>
-			<label>$tags_label</label><br />
-			$tags_input
-		</div>
-		$categories_input
-		<div>
-			<label>$access_label</label><br />
-			$access_input
-		</div>
-		<div class="elgg-foot">
-			$container_input
-			$guid_input
-			$submit
-		</div>
+	<div>
+		<label>$description_label</label><br />
+		$description_input
+	</div>
+	<div>
+		<label>$tags_label</label><br />
+		$tags_input
+	</div>
+	$categories_input
+	<div>
+		<label>$access_label</label><br />
+		$access_input
+	</div>
+	<div class="elgg-foot">
+		$container_input
+		$guid_input
+		$submit
 	</div>
 HTML;
 

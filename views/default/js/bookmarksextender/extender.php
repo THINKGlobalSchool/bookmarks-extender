@@ -17,6 +17,11 @@ elgg.provide('elgg.bookmarksextender');
 elgg.bookmarksextender.init = function() {
 	// Bind check input
 	$(document).delegate('#bookmarks-extender-check', 'click', elgg.bookmarksextender.check);
+
+	// Trigger check automatically if we're loading the save form in the bookmarklet popup
+	if ($('#elgg-bookmarklet-body').length !== 0) {
+		$('#bookmarks-extender-check').trigger('click');
+	}
 }
 
 /**
@@ -28,7 +33,6 @@ elgg.bookmarksextender.check = function(event) {
 	$_this.addClass('elgg-state-disabled');
 
 	$('#bookmarks-extender-preview-container').fadeOut('fast');
-	$('#bookmarks-extender-hidden').fadeOut('fast');
 	$('#bookmarks-loader').fadeIn('fast');
 
 	// Valid URL regex
@@ -52,9 +56,6 @@ elgg.bookmarksextender.check = function(event) {
 
 				// Set title content
 				$('input[name="title"]').val(response.output.result.title);
-
-				// Show the rest of the form
-				$('#bookmarks-extender-hidden').fadeIn('fast');
 
 				// Get description input
 				var $desc_input = $('textarea[name="description"]');

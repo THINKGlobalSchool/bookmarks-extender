@@ -11,9 +11,13 @@
  */
 
 elgg_register_event_handler('init', 'system', 'bookmarks_extender_init');
+elgg_register_event_handler('pagesetup', 'system', 'bookmarks_extender_pagesetup');
 
 // Init bookmarks extender
 function bookmarks_extender_init() {
+	// Set a bookmarklet version
+	define('BOOKMARKLET_VERSION', '1');
+
 	// Register library
 	elgg_register_library('elgg:bookmarksextender', elgg_get_plugins_path() . 'bookmarks-extender/lib/extender.php');
 	elgg_load_library('elgg:bookmarksextender');
@@ -31,6 +35,9 @@ function bookmarks_extender_init() {
 
 	// Create handler for bookmarks
 	elgg_register_event_handler('create', 'all', 'bookmarks_save');
+
+	// Extend bookmarks page handler
+	elgg_register_plugin_hook_handler('route', 'bookmarks', 'bookmarks_extender_route_handler');
 
 	// Actions
 	$action_base = elgg_get_plugins_path() . "bookmarks-extender/actions/bookmarks-extender";
@@ -55,4 +62,64 @@ function bookmarks_save($event, $object_type, $object) {
 		}
 	}
 	return TRUE;
+}
+
+
+/**
+ * Extend the bookmarks page handler
+ *
+ * @param string $hook
+ * @param string $type
+ * @param bool   $value
+ * @param array  $params
+ * @return array|null
+ */
+function bookmarks_extender_route_handler($hook, $type, $value, $params) {
+	if (is_array($value['segments']) && $value['segments'][0] == 'add') {
+		$address = get_input('address');
+		$title = get_input('title');
+		$version = get_input('v', FALSE);
+
+		if ($version == BOOKMARKLET_VERSION) {
+			elgg_load_library('elgg:bookmarks');
+
+			$content = elgg_view('bookmarks-extender/bookmarklet', array(
+				'page_owner_guid' => $page[1],
+				'address' => get_input('address'),
+				'title' => get_input('title'),
+			));
+			
+			echo elgg_view_page($title, $content, 'bookmarklet');
+			return false;
+		}
+	}
+	return $value;
+}
+
+/**
+ * Bookmarks extender page setup
+ *
+ * @return void
+ */
+function bookmarks_extender_pagesetup() {
+	/** Add bookmarklet title button **/
+	if (elgg_is_logged_in() && elgg_in_context('bookmarks') && !strpos(current_page_url(), 'bookmarklet')) {
+		$page_owner = elgg_get_page_owner_entity();
+		if (!$page_owner) {
+			$page_owner = elgg_get_logged_in_user_entity();
+		}
+		
+		if ($page_owner instanceof ElggGroup) {
+			$title = elgg_echo('bookmarks:bookmarklet:group');
+		} else {
+			$title = elgg_echo('bookmarks:bookmarklet');
+		}
+
+		elgg_register_menu_item('title', array(
+			'name' => 'bookmarklet',
+			'href' => 'bookmarks/bookmarklet/' . $page_owner->guid,
+			'text' => $title,
+			'link_class' => 'bookmarks-extender-bookmarklet-title',
+		));
+	}
 }

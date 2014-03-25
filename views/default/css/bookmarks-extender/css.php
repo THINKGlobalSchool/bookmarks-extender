@@ -11,10 +11,6 @@
  */
 ?>
 
-.elgg-form-bookmarks-save fieldset > #bookmarks-extender-hidden > div {
-	margin-bottom: 15px;
-}
-
 .bookmarks-address, .bookmarks-check {
 	display: inline-block;
 }
@@ -36,4 +32,22 @@
 	float: left;
 	max-width: 40%;
 	margin-right: 10px;
+}
+
+/** Bookmarklet **/
+#elgg-bookmarklet-content .bookmarks-address {
+	width: 88%;
+}
+
+body#elgg-bookmarklet-body {
+	background-color: transparent;
+	overflow: hidden;
+}
+
+div#elgg-bookmarklet-wrapper  {
+	width: 400px;
+}
+
+div#elgg-bookmarklet-form {
+	padding: 10px;
 }
