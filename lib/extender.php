@@ -10,39 +10,71 @@
  *
  */
 
+
+/**
+ * Helper function to grab the address preview data
+ *
+ * @param  string The address to scrape
+ * @return array  Preview data
+ */
+function bookmarks_extender_get_preview_data($address) {
+	elgg_load_library('facebook-link-preview');
+
+	// Get url info
+	$text = $address;
+	$text = " " . str_replace("\n", " ", $text);
+	$header = "";
+
+	$linkPreview = new LinkPreview();
+	$result = $linkPreview->crawl($text, $imageQty, $header);
+
+	$decoded_response = json_decode($result);
+
+	SetUp::finish();
+
+	return $decoded_response;
+}
+
 /**
  * Helper function to ensure that a bookmarks preview image is populated
  * 
  * @param  ElggEntity $bookmark The bookmark to check
+ * @param  int        $imageQty Image count (default 1)
  * @return void
  */
-function bookmarks_extender_populate_preview($bookmark) {
-	if (elgg_instanceof($bookmark, 'object', 'bookmarks') && !$bookmark->preview_populated) {
-		elgg_load_library('facebook-link-preview');
+function bookmarks_extender_populate_preview($bookmark, $imageQty = 1) {
 
-		// Get url info
-		$text = $bookmark->address;
-		$imageQuantity = 1;
-		$text = " " . str_replace("\n", " ", $text);
-		$header = "";
+	if (elgg_instanceof($bookmark, 'object', 'bookmarks')) {
+		
+		$preview_data = bookmarks_extender_get_preview_data($bookmark->address);
 
-		$linkPreview = new LinkPreview();
-		$result = $linkPreview->crawl($text, $imageQuantity, $header);
+		// Preview fields
+		$preview_fields = array(
+			'images' => 'preview_image',
+			'pageUrl' => 'preview_page_url',
+			'video' => 'preview_video',
+			'videoIframe' => 'preview_video_iframe'
+		);
 
-		$decoded_response = json_decode($result);
+		$populated = true;
 
-		if ($decoded_response) {
-			if ($decoded_response->images) {
-				$bookmark->preview_image = $decoded_response->images;
-			} 
-
-			// if ($decoded_response->description) {
-			// 	$bookmark->preview_description = $decoded_response->description;
-			// }
+		// Check each field to see if this bookmark has been populated
+		foreach ($preview_fields as $resultId => $field) {
+			if ($bookmark->$field === null) {
+				$populated = false;
+				break;
+			}
 		}
 
-		SetUp::finish();
-
-		$bookmark->preview_populated = true;
+		if (!$populated && $preview_data) {
+			echo 'populating';
+			foreach ($preview_fields as $resultId => $field) {
+				if ($preview_data->$resultId) {
+					$bookmark->$field = $preview_data->$resultId;
+				} else {
+					$bookmark->$field = false; // Set to false, may not exist (video or images)
+				}
+			}
+		}
 	}
 }
