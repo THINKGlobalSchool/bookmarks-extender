@@ -39,6 +39,10 @@
 	width: 88%;
 }
 
+#bookmarks-extender-preview-container img {
+	max-width: 560px;
+}
+
 body#elgg-bookmarklet-body {
 	background-color: transparent;
 	overflow: hidden;
