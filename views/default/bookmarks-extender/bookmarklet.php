@@ -54,13 +54,15 @@ HTML;
 echo <<<JAVASCRIPT
 	<script type='text/javascript'>
 		$(document).ready(function() {
+
 			// Close the bookmarklet
 			var destroy = function() {
 				window.parent.postMessage("destroy_bookmarklet","*");
 			};
 
 			$(".bookmarklet-lightbox").colorbox({
-				'inline': true
+				'inline': true,
+				'top': 100
 			}).trigger('click');
 
 			// Ajax submit the bookmark form
