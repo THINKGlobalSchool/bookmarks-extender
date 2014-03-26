@@ -36,10 +36,9 @@
 
 /** Bookmarklet **/
 #elgg-bookmarklet-content {
-	overflow-x: hidden;
-	max-width: 590px;
-	background: #FFF;
-	padding-right: 70px;
+	width: 600px;
+	overflow: hidden;
+	padding: 15px;
 }
 
 #elgg-bookmarklet-content * {

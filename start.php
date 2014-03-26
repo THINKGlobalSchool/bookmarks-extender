@@ -27,9 +27,14 @@ function bookmarks_extender_init() {
 	elgg_register_simplecache_view('js/bookmarksextender/extender');
 	elgg_register_js('elgg.bookmarksextender', $js);
 
-	// Load lightbox JS/CSS
-	elgg_load_js('lightbox');
-	elgg_load_css('lightbox');
+	// Register colorbox JS
+	$js = elgg_get_simplecache_url('js', 'colobox');
+	elgg_register_simplecache_view('js/colorbox');
+	elgg_register_js('elgg.colorbox', $js);
+
+	$css = elgg_get_simplecache_url('css', 'colorbox');
+	elgg_register_simplecache_view('css/colorbox');
+	elgg_register_css('elgg.colorbox', $css);
 
 	// Register fb link preview library
 	elgg_register_library('facebook-link-preview', elgg_get_plugins_path() . 'bookmarks-extender/vendors/fblinkpreview/php/classes/LinkPreview.php');
@@ -49,6 +54,7 @@ function bookmarks_extender_init() {
 
 	// Ajax view whitelist
 	elgg_register_ajax_view('bookmarks-extender/video');
+	elgg_register_ajax_view('bookmarks-extender/bookmarks_form');
 }
 
 /**

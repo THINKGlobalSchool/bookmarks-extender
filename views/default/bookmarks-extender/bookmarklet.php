@@ -10,6 +10,9 @@
  *
  */
 
+elgg_load_js('elgg.colorbox');
+elgg_load_css('elgg.colorbox');
+
 // Show the form for logged in users
 if (elgg_is_logged_in()) {
 	$vars = bookmarks_prepare_form_vars();
@@ -56,9 +59,8 @@ echo <<<JAVASCRIPT
 				window.parent.postMessage("destroy_bookmarklet","*");
 			};
 
-			// Init bookmarklet lightbox, and trigger immediately
-			$(".bookmarklet-lightbox").fancybox({
-				scrolling: 'no'
+			$(".bookmarklet-lightbox").colorbox({
+				'inline': true
 			}).trigger('click');
 
 			// Ajax submit the bookmark form
@@ -85,33 +87,6 @@ echo <<<JAVASCRIPT
 					}
 				});
 			});
-
-			// Grab bookmarklet element
-			bookmarklet = $('#elgg-bookmarklet-content');
-
-			// Get the initial, full height
-			initial_height = bookmarklet.height();
-
-				var top_offset = $('#fancybox-wrap').offset().top;	
-
-			// Force the lightbox to resize
-			setInterval(function(){
-				// Move lightbox
-				$.fancybox.resize();
-
-				// Get new window height
-				window_height = $(window).height();
-
-				// Shrink bookmarklet div and set overflow
-				if ($(bookmarklet).get(0).scrollHeight > (window_height - top_offset)) {
-					bookmarklet.height(window_height - top_offset - 60);
-					bookmarklet.css('overflow-y', 'scroll');
-				} else { // Reset bookmarklet height, unset overflow
-					bookmarklet.height(initial_height + top_offset + 60);
-					bookmarklet.css('overflow-y', 'hidden');
-				}	
-
-			},300);
 
 			// Open any other links in login form in a new tab
 			$('form.elgg-form-login a').click(function(event) {
