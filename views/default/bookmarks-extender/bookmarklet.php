@@ -56,20 +56,9 @@ echo <<<JAVASCRIPT
 				window.parent.postMessage("destroy_bookmarklet","*");
 			};
 
-			var resizeFancyBox = function() {
-
-			}
-
 			// Init bookmarklet lightbox, and trigger immediately
 			$(".bookmarklet-lightbox").fancybox({
-				scrolling: 'no',
-				onStart: function() {
-					//$(window).bind('resize', resizeFancyBox);
-				},
-				onClosed: function() {
-					//$(window).unbind('resize', resizeFancyBox);
-					destroy();
-				}
+				scrolling: 'no'
 			}).trigger('click');
 
 			// Ajax submit the bookmark form
@@ -103,6 +92,8 @@ echo <<<JAVASCRIPT
 			// Get the initial, full height
 			initial_height = bookmarklet.height();
 
+				var top_offset = $('#fancybox-wrap').offset().top;	
+
 			// Force the lightbox to resize
 			setInterval(function(){
 				// Move lightbox
@@ -112,11 +103,11 @@ echo <<<JAVASCRIPT
 				window_height = $(window).height();
 
 				// Shrink bookmarklet div and set overflow
-				if (bookmarklet.height() > (window_height - 60)) {
-					bookmarklet.height(window_height - 50);
+				if ($(bookmarklet).get(0).scrollHeight > (window_height - top_offset)) {
+					bookmarklet.height(window_height - top_offset - 60);
 					bookmarklet.css('overflow-y', 'scroll');
 				} else { // Reset bookmarklet height, unset overflow
-					bookmarklet.height(initial_height + 50);
+					bookmarklet.height(initial_height + top_offset + 60);
 					bookmarklet.css('overflow-y', 'hidden');
 				}	
 

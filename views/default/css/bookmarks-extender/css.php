@@ -35,12 +35,22 @@
 }
 
 /** Bookmarklet **/
+#elgg-bookmarklet-content {
+	overflow-x: hidden;
+	max-width: 590px;
+	background: #FFF;
+	padding-right: 70px;
+}
+
+#elgg-bookmarklet-content * {
+}
+
 #elgg-bookmarklet-content .bookmarks-address {
 	width: 88%;
 }
 
 #bookmarks-extender-preview-container img {
-	max-width: 560px;
+	width: 600px;
 }
 
 body#elgg-bookmarklet-body {
