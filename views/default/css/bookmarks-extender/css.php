@@ -49,7 +49,7 @@
 }
 
 #bookmarks-extender-preview-container img {
-	width: 600px;
+	max-width: 600px;
 }
 
 body#elgg-bookmarklet-body {
