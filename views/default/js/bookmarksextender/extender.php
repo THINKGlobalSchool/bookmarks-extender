@@ -79,6 +79,7 @@ elgg.bookmarksextender.check = function(event) {
 		elgg.register_error(elgg.echo('bookmarks-extender:error:invalidurl'));
 		$_this.removeAttr('disabled');
 		$_this.removeClass('elgg-state-disabled');
+		$('#bookmarks-loader').fadeOut('fast');
 	}
 
 	event.preventDefault();

@@ -67,7 +67,6 @@ function bookmarks_extender_populate_preview($bookmark, $imageQty = 1) {
 		}
 
 		if (!$populated && $preview_data) {
-			echo 'populating';
 			foreach ($preview_fields as $resultId => $field) {
 				if ($preview_data->$resultId) {
 					$bookmark->$field = $preview_data->$resultId;
@@ -77,4 +76,26 @@ function bookmarks_extender_populate_preview($bookmark, $imageQty = 1) {
 			}
 		}
 	}
+}
+
+/**
+ * Filter protocols, etc from video iframe
+ * 
+ * @param  string $content
+ * @return string
+ */
+function bookmarks_extender_filter_video_iframe($content) {
+	$search = array(
+		"display: none;",
+		"http://",
+		"https://"
+	);
+
+	$replace = array(
+		"",
+		"//",
+		"//"
+	);
+
+	return str_replace($search, $replace, $content);	
 }

@@ -34,6 +34,16 @@
 	margin-right: 10px;
 }
 
+.bookmarks-video-iframe {
+	margin-bottom: 15px;
+}
+
+.bookmarks-video-iframe > iframe {
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
 /** Bookmarklet **/
 #elgg-bookmarklet-content {
 	width: 600px;

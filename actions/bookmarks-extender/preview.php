@@ -23,6 +23,8 @@ if (preg_match($url_regex, $address) !== 0) {
 	// $preview_vars['description'] = $result->description;
 	$preview_vars['image'] = $result->images;
 	$preview_vars['title'] = $result->title;
+	$preview_vars['video'] = $result->video == 'yes';
+	$preview_vars['video_iframe'] = $result->videoIframe;
 	// $preview_vars['url'] = $address;
 
 	$output['view'] = elgg_view('bookmarks-extender/preview', $preview_vars);

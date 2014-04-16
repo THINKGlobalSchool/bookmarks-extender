@@ -48,6 +48,9 @@ function bookmarks_extender_init() {
 	// Extend bookmarks page handler
 	elgg_register_plugin_hook_handler('route', 'bookmarks', 'bookmarks_extender_route_handler');
 
+	// Icon hook
+	elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'bookmarks_icon_url_override');
+
 	// Actions
 	$action_base = elgg_get_plugins_path() . "bookmarks-extender/actions/bookmarks-extender";
 	elgg_register_action('bookmarks/preview', "$action_base/preview.php");
@@ -131,4 +134,19 @@ function bookmarks_extender_pagesetup() {
 			'link_class' => 'bookmarks-extender-bookmarklet-title',
 		));
 	}
+}
+
+/**
+ * Override the default entity icon for bookmarks
+ *
+ * @return string Relative URL
+ */
+function bookmarks_icon_url_override($hook, $type, $value, $params) {
+	$bookmark = $params['entity'];
+	$size = $params['size'];
+	
+	if (elgg_instanceof($bookmark, 'object', 'bookmarks') && $bookmark->preview_image) {
+		$value = $bookmark->preview_image;
+	}
+	return $value;
 }

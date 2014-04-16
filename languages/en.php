@@ -13,8 +13,8 @@
 $english = array(
 	// Labels
 	'bookmarks-extender:label:check' => 'Check',
-	'bookmarks-extender:label:image' => 'Image',
-	'bookmarks-extender:label:noimage' => 'No images found',
+	'bookmarks-extender:label:preview' => 'Preview',
+	'bookmarks-extender:label:nopreview' => 'Preview Unavailable',
 
 	// Messages
 	'bookmarks-extender:error:invalidurl' => 'Invalid URL',

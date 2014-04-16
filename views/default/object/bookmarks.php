@@ -65,26 +65,6 @@ if (elgg_in_context('widgets')) {
 	$metadata = '';
 }
 
-if ($bookmark->preview_image) {
-	$class = 'bookmarks-image-left';
-	if ($bookmark->preview_video == 'yes') {
-		$class = 'elgg-lightbox';
-		$href = elgg_normalize_url('ajax/view/bookmarks-extender/video?entity_guid=' . $bookmark->guid);
-	} else {
-		$href = $bookmark->preview_page_url;
-	}
-
-	$image_preview = elgg_view('output/url', array(
-		'text' => elgg_view('output/img', array(
-			'src' => $bookmark->preview_image,
-			'alt' => $bookmark->title,
-			'class' => 'bookmarks-image-left'
-		)), 
-		'href' => $href,
-		'class' => $class
-	));
-}
-
 if ($full && !elgg_in_context('gallery')) {
 
 	$params = array(
@@ -97,10 +77,24 @@ if ($full && !elgg_in_context('gallery')) {
 	$summary = elgg_view('object/elements/summary', $params);
 
 	$bookmark_icon = elgg_view_icon('push-pin-alt');
+
+	if ($bookmark->preview_image) {
+		if ($bookmark->preview_video == 'yes') {
+			$bookmark_preview = "<div class='bookmarks-video-iframe'>" . elgg_view('bookmarks-extender/video', array(
+				'entity_guid' => $bookmark->guid
+			)) . "</div>";
+		} else {
+			$bookmark_preview = elgg_view_entity_icon($bookmark, 'medium', array(
+				'href' => $bookmark->preview_page_url,
+				'img_class' => 'bookmarks-image-left'
+			));
+		}
+	}
+
 	$body = <<<HTML
 <div class="bookmark elgg-content mts">
 	$bookmark_icon<div style='display: inline-block;' class="elgg-heading-basic mbm">$link</div><br />
-	$image_preview
+	$bookmark_preview
 	$description
 </div>
 HTML;
@@ -144,8 +138,6 @@ HTML;
 		'style' => 'display: inline-block;'
 	));
 
-	$content .= $image_preview;
-
 	$content .= elgg_view_icon('push-pin-alt') . "$link<br />";
 
 	$content .= $excerpt;
@@ -158,6 +150,22 @@ HTML;
 	);
 	$params = $params + $vars;
 	$body = elgg_view('object/elements/summary', $params);
-	
-	echo elgg_view_image_block($owner_icon, $body);
+
+	if ($bookmark->preview_image) {
+		if ($bookmark->preview_video == 'yes') {
+			$class = 'elgg-lightbox';
+			$href = elgg_normalize_url('ajax/view/bookmarks-extender/video?entity_guid=' . $bookmark->guid);
+		} else {
+			$href = $bookmark->preview_page_url;
+		}
+
+		$icon = elgg_view_entity_icon($bookmark, 'medium', array(
+			'href' => $href,
+			'link_class' => $class
+		));
+	} else {
+		$icon = $owner_icon;
+	}
+
+	echo elgg_view_image_block($icon, $body);
 }
