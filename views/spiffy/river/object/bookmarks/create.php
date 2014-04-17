@@ -12,8 +12,6 @@
 
 $object = $vars['item']->getObjectEntity();
 
-bookmarks_extender_populate_preview($object);
-
 $subtitle = elgg_view('output/url', 
 	array(
 		'href' => $object->address,
