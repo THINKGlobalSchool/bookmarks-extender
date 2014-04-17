@@ -56,6 +56,13 @@ class Content {
         $content = array();
         if (preg_match_all(Regex::$imageRegex, $text, $matching)) {
 
+            // Ignore images containing
+            $ignore = array(
+                'blank',
+                'mask',
+                'spacer'
+            );
+
             for ($i = 0; $i < count($matching[0]); $i++) {
                 $src = "";
                 $pathCounter = substr_count($matching[0][$i], "../");
@@ -69,6 +76,18 @@ class Content {
                         array_push($content, $src . $imgSrc);
                     else
                         array_push($content, $src);
+                }
+
+                $img = array_pop($content);
+                $flag = true;
+                foreach ($ignore as $item) {
+                    if (strpos($img, $item) !== false) {
+                        $flag = false;
+                    }
+                }
+
+                if ($flag) {
+                    array_push($content, $img);
                 }
             }
         }
@@ -115,7 +134,7 @@ class Content {
                     $metaTags["title"] = Content::separeMetaTagsContent($value);
                 else if ((strpos($value, 'property="og:description"') !== false || strpos($value, "property='og:description'") !== false) || (strpos($value, 'name="description"') !== false || strpos($value, "name='description'") !== false))
                     $metaTags["description"] = Content::separeMetaTagsContent($value);
-                else if ((strpos($value, 'property="og:image"') !== false || strpos($value, "property='og:image'") !== false) || (strpos($value, 'name="image"') !== false || strpos($value, "name='image'") !== false))
+                else if (((strpos($value, 'property="og:image"') !== false || strpos($value, "property='og:image'") !== false) || (strpos($value, 'name="image"') !== false || strpos($value, "name='image'") !== false)) && strpos($value, 'blank') === false)
                     $metaTags["image"] =  Content::separeMetaTagsContent($value);
             }
 

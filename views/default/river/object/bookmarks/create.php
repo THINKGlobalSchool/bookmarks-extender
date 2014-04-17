@@ -13,8 +13,6 @@
 $object = $vars['item']->getObjectEntity();
 $excerpt = elgg_get_excerpt($object->description);
 
-bookmarks_extender_populate_preview($object);
-
 if ($object->preview_image) {
 	if ($object->preview_video == 'yes') {
 		$class = 'elgg-lightbox';
