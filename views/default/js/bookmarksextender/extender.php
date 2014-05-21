@@ -62,7 +62,9 @@ elgg.bookmarksextender.check = function(event) {
 
 				// Update description, may be tinymce
 				if (typeof(tinyMCE) !== 'undefined') {
-					tinyMCE.get($desc_input.attr('id')).setContent(response.output.result.description)
+					setTimeout(function() {
+						tinyMCE.get($desc_input.attr('id')).setContent(response.output.result.description);
+					}, 1000);
 				} else {
 					$desc_input.val(response.output.result.description);
 				}

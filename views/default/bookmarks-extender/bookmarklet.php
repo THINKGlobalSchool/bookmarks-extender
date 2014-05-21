@@ -60,10 +60,29 @@ echo <<<JAVASCRIPT
 				window.parent.postMessage("destroy_bookmarklet","*");
 			};
 
+			//Customize colorbox dimensions
+			var colorboxResize = function() {
+				height = window.innerHeight - 250;
+				$.colorbox.resize({
+					'height': height,
+				});
+			}
+
 			$(".bookmarklet-lightbox").colorbox({
 				'inline': true,
-				'top': 100
+				'top': 75,
+				'onClosed': function(event) {
+					destroy();
+				},
+				'onComplete': function(event) {
+					colorboxResize();
+				}
 			}).trigger('click');
+
+			//In case of window being resized
+			$(window).resize(function() {
+				colorboxResize();
+			});
 
 			// Ajax submit the bookmark form
 			$('form.elgg-form-bookmarks-save').submit(function(event) {
@@ -79,12 +98,10 @@ echo <<<JAVASCRIPT
 				elgg.action($(this).attr('action'), {
 					data: $(this).serialize(),
 					success: function(json) {
-						$('#fancybox-close').hide();
 						$('#elgg-bookmarklet-content').removeClass('elgg-ajax-loader');
 						$('#elgg-bookmarklet-content').html("<h2 style='text-align: center;'>" + elgg.echo('bookmarklet:saved') + "</h2>");
 						setTimeout(function() {
-							$.fancybox.close();
-							destroy();
+							$('#cboxClose').click();
 						}, 1500);
 					}
 				});

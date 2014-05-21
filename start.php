@@ -116,16 +116,10 @@ function bookmarks_extender_route_handler($hook, $type, $value, $params) {
 function bookmarks_extender_pagesetup() {
 	/** Add bookmarklet title button **/
 	if (elgg_is_logged_in() && elgg_in_context('bookmarks') && !strpos(current_page_url(), 'bookmarklet')) {
-		$page_owner = elgg_get_page_owner_entity();
-		if (!$page_owner) {
-			$page_owner = elgg_get_logged_in_user_entity();
-		}
 		
-		if ($page_owner instanceof ElggGroup) {
-			$title = elgg_echo('bookmarks:bookmarklet:group');
-		} else {
-			$title = elgg_echo('bookmarks:bookmarklet');
-		}
+		$page_owner = elgg_get_logged_in_user_entity();
+
+		$title = elgg_echo('bookmarks:bookmarklet');
 
 		elgg_register_menu_item('title', array(
 			'name' => 'bookmarklet',
