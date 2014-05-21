@@ -24,16 +24,13 @@ function bookmarks_extender_init() {
 
 	// Register bookmarks extender JS
 	$js = elgg_get_simplecache_url('js', 'bookmarksextender/extender');
-	elgg_register_simplecache_view('js/bookmarksextender/extender');
 	elgg_register_js('elgg.bookmarksextender', $js);
 
 	// Register colorbox JS
 	$js = elgg_get_simplecache_url('js', 'colobox');
-	elgg_register_simplecache_view('js/colorbox');
 	elgg_register_js('elgg.colorbox', $js);
 
 	$css = elgg_get_simplecache_url('css', 'colorbox');
-	elgg_register_simplecache_view('css/colorbox');
 	elgg_register_css('elgg.colorbox', $css);
 
 	// Register fb link preview library
