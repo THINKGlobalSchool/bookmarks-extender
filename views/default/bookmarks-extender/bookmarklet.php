@@ -10,8 +10,8 @@
  *
  */
 
-elgg_load_js('elgg.colorbox');
-elgg_load_css('elgg.colorbox');
+elgg_load_js('lightbox');
+elgg_load_css('lightbox');
 
 // Show the form for logged in users
 if (elgg_is_logged_in()) {
@@ -71,6 +71,7 @@ echo <<<JAVASCRIPT
 			$(".bookmarklet-lightbox").colorbox({
 				'inline': true,
 				'top': 75,
+				'innerWidth': '620px',
 				'onClosed': function(event) {
 					destroy();
 				},

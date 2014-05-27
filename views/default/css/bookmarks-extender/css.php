@@ -10,7 +10,7 @@
  *
  */
 ?>
-
+/** <style> /**/
 .bookmarks-address, .bookmarks-check {
 	display: inline-block;
 }
@@ -46,9 +46,8 @@
 
 /** Bookmarklet **/
 #elgg-bookmarklet-content {
-	width: 600px;
+	min-width: 600px;
 	overflow: hidden;
-	padding: 15px;
 }
 
 #elgg-bookmarklet-content * {

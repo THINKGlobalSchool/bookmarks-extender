@@ -26,13 +26,6 @@ function bookmarks_extender_init() {
 	$js = elgg_get_simplecache_url('js', 'bookmarksextender/extender');
 	elgg_register_js('elgg.bookmarksextender', $js);
 
-	// Register colorbox JS
-	$js = elgg_get_simplecache_url('js', 'colobox');
-	elgg_register_js('elgg.colorbox', $js);
-
-	$css = elgg_get_simplecache_url('css', 'colorbox');
-	elgg_register_css('elgg.colorbox', $css);
-
 	// Register fb link preview library
 	elgg_register_library('facebook-link-preview', elgg_get_plugins_path() . 'bookmarks-extender/vendors/fblinkpreview/php/classes/LinkPreview.php');
 
@@ -90,6 +83,8 @@ function bookmarks_extender_route_handler($hook, $type, $value, $params) {
 		$version = get_input('v', FALSE);
 
 		if ($version == BOOKMARKLET_VERSION) {
+			// Need to unregister the x-frame-options header here
+			elgg_unregister_plugin_hook_handler('output:before', 'page', '_elgg_views_send_header_x_frame_options');
 			elgg_load_library('elgg:bookmarks');
 
 			$content = elgg_view('bookmarks-extender/bookmarklet', array(
